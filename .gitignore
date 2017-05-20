@@ -1,0 +1,13 @@
+build
+result
+tmp
+
+
+.DS_Store
+.cache-main
+.classpath
+.gradle/
+.project
+.settings/
+bin/
+

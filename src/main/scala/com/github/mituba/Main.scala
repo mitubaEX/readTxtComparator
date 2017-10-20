@@ -23,6 +23,7 @@ object Main{
   def run(arg : String) = scala.io.Source.fromFile(arg).getLines()
 
   def main(args : Array[String]){
+    val start = System.currentTimeMillis
     for(s <- run(args(0))){
       val splitString = s.split("\\*\\*\\*")
       if(splitString.length >= 4){
@@ -42,5 +43,6 @@ object Main{
       //     compare(inputFilePath, fileWrite("b", strSplit(2)))
       // }
     }
+    println("compareTime:" + (System.currentTimeMillis - start) + "msec")
   }
 }

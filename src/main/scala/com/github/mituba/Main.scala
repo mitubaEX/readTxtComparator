@@ -4,11 +4,12 @@ import java.io.PrintWriter
 import javax.script.ScriptException;
 import com.github.pochi.runner.scripts.ScriptRunner;
 import com.github.pochi.runner.scripts.ScriptRunnerBuilder;
+import java.net.URLEncoder
 
 object Main{
 
   def fileWrite(filename:String, birthmark:String) : String = {
-    val newFile = new PrintWriter("tmp/" + filename + ".csv")
+    val newFile = new PrintWriter("tmp/" + filename + ".csv", "UTF-8")
     newFile.write(birthmark)
     newFile.close()
     "tmp/" + filename + ".csv"
@@ -24,11 +25,16 @@ object Main{
 
   def main(args : Array[String]){
     val start = System.currentTimeMillis
-    for(s <- run(args(0))){
-      val splitString = s.split("\\*\\*\\*")
-      if(splitString.length >= 4){
-        val a = fileWrite("a", splitString(1))
-        val b = fileWrite("b", splitString(2))
+    val readFile = run(args(0)).toList
+    // val inputBirthmark = readFile.head
+    if(readFile.size <= 1)
+      return;
+    val a = fileWrite("a", readFile.head)
+    // for(s <- readFile.tail.tail.tail.tail.tail){
+    for(s <- readFile.tail.tail){
+      val splitString = s.split(",", 5)
+      if(splitString.length >= 5){
+        val b = fileWrite("b", (splitString(0) + "," + splitString(2) + "," + splitString(3) + "," + splitString(4)).replace("quot;", "").replace("\\", "").replace("\"", ""))
 
         compare(a, b)
       } else {
